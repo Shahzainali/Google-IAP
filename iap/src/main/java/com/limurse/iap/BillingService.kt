@@ -8,6 +8,7 @@ import android.util.Log
 import com.android.billingclient.api.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class BillingService(
@@ -91,14 +92,15 @@ class BillingService(
         launchBillingFlow(activity, sku, BillingClient.ProductType.INAPP, obfuscatedAccountId, obfuscatedProfileId)
     }
 
-     override fun subscribe(activity: Activity, sku: String) {
-        //if (!sku.isProductReady()) {
-        //    log("buy. Google billing service is not ready yet. (SKU is not ready yet -2)")
-        //    return
-        //}
-        (activity as MainActivity).ExitFragment() // close the fragment listing of iap's. but selected purchase will kickoff
-        launchBillingFlow(activity, sku, BillingClient.ProductType.SUBS)
+    override fun subscribe(activity: Activity, sku: String, obfuscatedAccountId: String?, obfuscatedProfileId: String?) {
+        if (!sku.isProductReady()) {
+            log("buy. Google billing service is not ready yet. (SKU is not ready yet -2)")
+            return
+        }
+
+        launchBillingFlow(activity, sku, BillingClient.ProductType.SUBS, obfuscatedAccountId, obfuscatedProfileId)
     }
+
 
     private fun launchBillingFlow(activity: Activity, sku: String, type: String, obfuscatedAccountId: String?, obfuscatedProfileId: String?) {
         sku.toProductDetails(type) { productDetails ->
