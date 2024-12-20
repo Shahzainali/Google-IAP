@@ -93,10 +93,10 @@ class BillingService(
     }
 
     override fun subscribe(activity: Activity, sku: String, obfuscatedAccountId: String?, obfuscatedProfileId: String?) {
-        if (!sku.isProductReady()) {
-            log("buy. Google billing service is not ready yet. (SKU is not ready yet -2)")
-            return
-        }
+        // if (!sku.isProductReady()) {
+        //     log("buy. Google billing service is not ready yet. (SKU is not ready yet -2)")
+        //     return
+        // }
 
         launchBillingFlow(activity, sku, BillingClient.ProductType.SUBS, obfuscatedAccountId, obfuscatedProfileId)
     }
